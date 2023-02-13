@@ -25,6 +25,7 @@ def datetime_parser(dct: Dict[Union[str, int], Any]) -> Dict[Union[str, int], An
 
 
 async def init_db():
+    "func `init_db` loads db with data from config/initial_data.json"
     with open(INIT_DATA_PATH) as f:
         init_data = json.load(f, object_hook=datetime_parser)
     table_by_name = {"posts": posts, "tags": tags, "post_tags": post_tags}
@@ -35,11 +36,13 @@ async def init_db():
 
 
 async def teardown_db():
+    "funcs `teardown_db` deals all rows of model tables [posts, tags, post_tags] in db"
     for table in [posts, tags, post_tags]:
         query = table.delete()
         await database.execute(query)
 
 
 def get_context(request: Request, **kwargs) -> Dict[str, Any]:
+    "func `get_context` returns FastAPI.Request and **kwargs in dict"
     context = {"request": request, **kwargs}
     return context
