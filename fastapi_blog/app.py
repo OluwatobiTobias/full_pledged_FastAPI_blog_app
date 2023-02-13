@@ -31,6 +31,7 @@ app = get_app()
 
 @app.on_event("startup")
 async def startup():
+    "funcs `startup` is called everytime application launch to connect and load data to db"
     await database.connect()
     if os.environ.get("INIT_DB"):
         await teardown_db()
@@ -39,6 +40,7 @@ async def startup():
 
 @app.on_event("shutdown")
 async def shutdown():
+    "funcs `shutdown` is called everytime application shutdown to disconnect and erase data from db"
     if os.environ.get("TEARDOWN_DB"):
         await teardown_db()
     await database.disconnect()
