@@ -92,6 +92,7 @@ async def post(request: Request, post_id: int):
     return templates.TemplateResponse("post.html", context)
 
 
+
 @app.get("/tags", response_class=HTMLResponse)
 async def tags(request: Request):
     # TODO: tags page

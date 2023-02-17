@@ -115,13 +115,20 @@ async def fetch_posts(
         .select_from(posts.outerjoin(post_tags).outerjoin(tags))
         .group_by(posts.c.post_id)
     )
+    print('\n\n----query', query, '\n\n----query', post_ids,offset, limit,  '\n' )
     if post_ids:
         query = query.where(posts.c.post_id.in_(post_ids))
     else:
         query = query.limit(limit).offset(offset)
 
     fetched_posts = []
+
+    c = database.fetch_all(query)
+    for i in  c:
+        print('\n', i.result())
     for row in await database.fetch_all(query):
+        # print('\n\n-----', row,'\n\n-----'  )
+
         post = dict(row.items())
         post["tag_list"] = (
             post["tag_list"].split(",") if post["tag_list"] is not None else []
