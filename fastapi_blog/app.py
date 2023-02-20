@@ -74,7 +74,9 @@ async def index(request: Request):
 async def posts(request: Request, page: int = 0):
     items_per_page = 3
     posts = await fetch_posts(offset=page * items_per_page, limit=items_per_page)
+    # print(posts, '\n\n')
     context = get_context(request, posts=posts, page=page)
+    # print(context)
     return templates.TemplateResponse("posts.html", context)
 
 

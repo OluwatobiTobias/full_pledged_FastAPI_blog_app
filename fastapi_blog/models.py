@@ -104,6 +104,7 @@ async def fetch_post(post_id: int = None) -> Optional[Mapping]:
         post["tag_list"].split(",") if post["tag_list"] is not None else []
     )
     post["content"] = markdown2.markdown(post["content"])
+    print(post)
     return post
 
 
@@ -115,7 +116,6 @@ async def fetch_posts(
         .select_from(posts.outerjoin(post_tags).outerjoin(tags))
         .group_by(posts.c.post_id)
     )
-    print('\n\n----query', query, '\n\n----query', post_ids,offset, limit,  '\n' )
     if post_ids:
         query = query.where(posts.c.post_id.in_(post_ids))
     else:
@@ -123,12 +123,7 @@ async def fetch_posts(
 
     fetched_posts = []
 
-    c = database.fetch_all(query)
-    for i in  c:
-        print('\n', i.result())
     for row in await database.fetch_all(query):
-        # print('\n\n-----', row,'\n\n-----'  )
-
         post = dict(row.items())
         post["tag_list"] = (
             post["tag_list"].split(",") if post["tag_list"] is not None else []
