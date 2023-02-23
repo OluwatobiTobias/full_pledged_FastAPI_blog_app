@@ -87,11 +87,15 @@ async def fetch_last_post_id() -> int:
         .order_by(desc(posts.c.date))
         .limit(1)
     )
-    return await database.fetch_val(query=query)
+    print(query)
+    v = await database.fetch_val(query=query)
+    print(f'\n------{v}----\n')
+    return v
 
 
 async def fetch_post(post_id: int = None) -> Optional[Mapping]:
-    post_id = post_id or await fetch_last_post_id()
+    post_id = post_id or (p := await fetch_last_post_id())
+    # print(f'-----{p}\n')
     query = (
         select([posts, func.group_concat(tags.c.name).label("tag_list")])
         .select_from(posts.outerjoin(post_tags).outerjoin(tags))
@@ -142,7 +146,9 @@ async def fetch_posts_by_tag(
         .limit(limit)
         .offset(offset)
     )
+    print(query)
     post_ids = [item["post_id"] for item in await database.fetch_all(query)]
+    print(f'\n\n{post_ids}\n\n')
     return await fetch_posts(post_ids) if post_ids else []
 
 
@@ -170,6 +176,7 @@ async def fetch_tag(tag_id: int = None) -> Optional[Mapping]:
     tag["post_list"] = (
         tag["post_list"].split(",") if tag["post_list"] is not None else []
     )
+    print(tag)
     return tag
 
 
@@ -184,8 +191,10 @@ async def fetch_tags(offset: int = 0, limit: int = 5) -> List[Mapping]:
     fetched_tags = []
     for row in await database.fetch_all(query):
         tag = dict(row.items())
+        print(f'\n {tag}')
         tag["post_list"] = (
             tag["post_list"].split(",") if tag["post_list"] is not None else []
         )
         fetched_tags.append(tag)
+    print(fetched_tags)
     return fetched_tags
