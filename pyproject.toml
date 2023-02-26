@@ -1,22 +1,22 @@
 [tool.poetry]
 name = "fastapi-blog"
-version = "0.1.0"
+version = "0.1.1"
 description = "FastApi App for Web Blogging"
-authors = ["Smetanin Aleksandr <smetamx@gmail.com>"]
+authors = ["Giwa Oluwatobi <giwaoluwatobi@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-fastapi = "^0.61.2"
+python = "3.11"
+fastapi = "0.92"
 uvicorn = "^0.12.2"
 pydantic = "^1.7.2"
 python-dotenv = "^0.15.0"
 Jinja2 = "^2.11.2"
-aiofiles = "^0.6.0"
+# aiofiles = "^0.6.0"
 alembic = "^1.4.3"
 databases = {extras = ["sqlite"], version = "^0.4.0"}
 markdown2 = "^2.3.10"
-jose = "^1.0.0"
-passlib = "^1.7.4"
+# jose = "^1.0.0"
+# passlib = "^1.7.4"
 psycopg2-binary = "^2.9.5"
 asyncpg = "^0.27.0"
 
